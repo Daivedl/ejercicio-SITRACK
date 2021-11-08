@@ -5,13 +5,13 @@ const app = express();
 const PORT = 3000;
 //faker para las coordenadas
 const faker = require('faker');
-//md5
-const md5 = require('md5');
-console.log(md5('test'));
+//md5-base64
+const md5Base64 = require('md5-base64');
 //https
 const https = require('https');
 //formato de fecha "yyyy-MM-ddTHH:mm:ssZ"
 const moment = require('moment');
+require('dotenv').config();
 
 
 const url = 'https://test-externalrgw.ar.sitrack.com/frame';
@@ -24,9 +24,7 @@ var randomLatitud = faker.address.latitude();
 var randomLongitud = faker.address.longitude();
 console.log(randomLatitud, randomLongitud);
 
-var loginCode = '98173';
-var text = 'DAVID LEIVA';
-var textLabel = 'TAG';
+
 var date = moment.utc(date).format('YYYY-MM-DDThh:mm:ssZ');
 console.log(date);
 
@@ -40,10 +38,14 @@ const data = JSON.stringify({
     gpsDop: 1.0,
     text: 'DAVID LEIVA',
     textLabel: 'TAG'
-
 });
 console.log(data);
+const timestamp = moment().unix();
+const hash = md5Base64(process.env.application + process.env.secretKey + timestamp);
 
+console.log(timestamp);
+console.log(hash);
+console.log(hash.length);
 
 app.get('/', function (req, res) {
     res.send('Hola');
