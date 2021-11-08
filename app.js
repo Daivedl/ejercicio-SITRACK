@@ -12,6 +12,9 @@ const https = require('https');
 //formato de fecha "yyyy-MM-ddTHH:mm:ssZ"
 const moment = require('moment');
 require('dotenv').config();
+//axios
+const axios = require('axios');
+
 
 
 const url = 'https://test-externalrgw.ar.sitrack.com/frame';
@@ -28,7 +31,7 @@ console.log(randomLatitud, randomLongitud);
 var date = moment.utc(date).format('YYYY-MM-DDThh:mm:ssZ');
 console.log(date);
 
-//funcion
+
 const data = JSON.stringify({
     loginCode: '98173',
     reportDate: date,
@@ -47,9 +50,21 @@ console.log(timestamp);
 console.log(hash);
 console.log(hash.length);
 
+
+//funcion
+axios.put(url, {data})
+  .then(res => {
+    console.log(`statusCode: ${res.status}`)
+    //console.log(res)
+  })
+  .catch(error => {
+    console.error(error)
+  });
+
 app.get('/', function (req, res) {
     res.send('Hola');
 });
+
 
 
 
