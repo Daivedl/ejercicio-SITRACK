@@ -35,7 +35,7 @@ var date = moment.utc(date).format('YYYY-MM-DDThh:mm:ssZ');
 console.log(date);
 
 
-const data = JSON.stringify({
+/*const data = JSON.stringify({
   loginCode: '98173',
   reportDate: date,
   reportType: '2',
@@ -45,7 +45,7 @@ const data = JSON.stringify({
   text: 'DAVID LEIVA',
   textLabel: 'TAG'
 });
-console.log(data);
+console.log(data);*/
 const timestamp = moment().unix();
 const hash = md5Base64(process.env.application + process.env.secretKey + timestamp);
 
