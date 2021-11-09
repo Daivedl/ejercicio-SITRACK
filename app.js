@@ -1,17 +1,20 @@
 //server
 const express = require('express');
 const app = express();
+
 //puerto
 const PORT = 3000;
+
 //faker para las coordenadas
 const faker = require('faker');
+
 //md5-base64
 const md5Base64 = require('md5-base64');
-//https
-const https = require('https');
+
 //formato de fecha "yyyy-MM-ddTHH:mm:ssZ"
 const moment = require('moment');
 require('dotenv').config();
+
 //axios
 const axios = require('axios');
 
@@ -33,14 +36,14 @@ console.log(date);
 
 
 const data = JSON.stringify({
-    loginCode: '98173',
-    reportDate: date,
-    reportType: '2',
-    latitude: randomLatitud,
-    longitude: randomLongitud,
-    gpsDop: 1.0,
-    text: 'DAVID LEIVA',
-    textLabel: 'TAG'
+  loginCode: '98173',
+  reportDate: date,
+  reportType: '2',
+  latitude: randomLatitud,
+  longitude: randomLongitud,
+  gpsDop: 1.0,
+  text: 'DAVID LEIVA',
+  textLabel: 'TAG'
 });
 console.log(data);
 const timestamp = moment().unix();
@@ -50,24 +53,43 @@ console.log(timestamp);
 console.log(hash);
 console.log(hash.length);
 
+//const mantenerFirma = hash;
 
 //funcion
-axios.put(url, {data})
+axios.put(url, {
+  loginCode: '98173',
+  reportDate: date,
+  reportType: '2',
+  latitude: randomLatitud,
+  longitude: randomLongitud,
+  gpsDop: 1.0,
+  text: 'DAVID LEIVA',
+  textLabel: 'TAG'
+}, {
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": 'SWSAuth',
+    "application": `${process.env.application}`,
+    "signature": `${hash}`,
+    "timestamp": `${timestamp}`
+  }
+})
   .then(res => {
     console.log(`statusCode: ${res.status}`)
-    //console.log(res)
+    console.log(res)
   })
   .catch(error => {
     console.error(error)
   });
 
 app.get('/', function (req, res) {
-    res.send('Hola');
+  res.send('Hola');
 });
-
+//headers en el axios, revisar el statuscode
+//y volver a enviar, sino enviar uno nuevo.. try catch.. repetir cada 1 min por 5 -10 min
 
 
 
 app.listen(PORT, () => {
-    console.log("Servidor funcionando en el puerto " + PORT);
+  console.log("Servidor funcionando en el puerto " + PORT);
 });
