@@ -35,8 +35,7 @@ console.log(randomLatitud, randomLongitud);
 var date = moment.utc(date).format('YYYY-MM-DDThh:mm:ssZ');
 console.log(date);
 
-
-/*const data = JSON.stringify({
+const data = JSON.stringify({
   loginCode: '98173',
   reportDate: date,
   reportType: '2',
@@ -46,7 +45,7 @@ console.log(date);
   text: 'DAVID LEIVA',
   textLabel: 'TAG'
 });
-console.log(data);*/
+console.log(data);
 const timestamp = moment().unix();
 const hash = md5Base64(process.env.application + process.env.secretKey + timestamp);
 
@@ -54,10 +53,13 @@ console.log(timestamp);
 console.log(hash);
 console.log(hash.length);
 
-var datos = 'SWSAuth application="' + process.env.application + '",signature="' +hash+ '",timestamp="' +timestamp;
+var datos = 'SWSAuth application="' + process.env.application + '",signature="' + hash + '",timestamp="' + moment().unix();
 
 
 //funcion
+function gps(){
+
+
 axios.put(url, {
   loginCode: '98173',
   reportDate: date,
@@ -76,17 +78,22 @@ axios.put(url, {
   .then(res => {
     console.log(`statusCode: ${res.status}`)
     console.log(res)
+    if (res.status == 200){
+      setInterval(gps,60000);
+    }
   })
   .catch(error => {
     console.error(error)
   });
+}
+gps();
 
 app.get('/', function (req, res) {
   res.send('Hola');
 });
 //headers en el axios, revisar el statuscode
 //y volver a enviar, sino enviar uno nuevo.. try catch.. repetir cada 1 min por 5 -10 min
-
+//crear una db, guardar los datos recibidos con los enviados, mostrarlos en react al consultar
 
 
 app.listen(PORT, () => {
