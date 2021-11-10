@@ -17,6 +17,7 @@ require('dotenv').config();
 
 //axios
 const axios = require('axios');
+const { time } = require('faker/locale/zh_TW');
 
 
 
@@ -53,7 +54,8 @@ console.log(timestamp);
 console.log(hash);
 console.log(hash.length);
 
-//const mantenerFirma = hash;
+var datos = 'SWSAuth application="' + process.env.application + '",signature="' +hash+ '",timestamp="' +timestamp;
+
 
 //funcion
 axios.put(url, {
@@ -67,11 +69,8 @@ axios.put(url, {
   textLabel: 'TAG'
 }, {
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": 'SWSAuth',
-    "application": `${process.env.application}`,
-    "signature": `${hash}`,
-    "timestamp": `${timestamp}`
+    'Content-Type': 'application/json',
+    'Authorization': datos
   }
 })
   .then(res => {
