@@ -57,36 +57,53 @@ var datos = 'SWSAuth application="' + process.env.application + '",signature="' 
 
 
 //funcion
-function gps(){
-
-
-axios.put(url, {
-  loginCode: '98173',
-  reportDate: date,
-  reportType: '2',
-  latitude: randomLatitud,
-  longitude: randomLongitud,
-  gpsDop: 1.0,
-  text: 'DAVID LEIVA',
-  textLabel: 'TAG'
-}, {
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': datos
-  }
-})
-  .then(res => {
-    console.log(`statusCode: ${res.status}`)
-    console.log(res)
-    if (res.status == 200){
-      setInterval(gps,60000);
+function gps() {
+  axios.put(url, {
+    loginCode: '98173',
+    reportDate: date,
+    reportType: '2',
+    latitude: randomLatitud,
+    longitude: randomLongitud,
+    gpsDop: 1.0,
+    text: 'DAVID LEIVA',
+    textLabel: 'TAG'
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': datos
     }
   })
-  .catch(error => {
-    console.error(error)
-  });
+    .then(res => {
+      //console.log(`statusCode: ${res.status}`)
+      //console.log(res)
+      if (res.status == 200) {
+        console.log(`statusCode en if: ${res.status}`);
+        //setInterval(gps, 60000);
+      } else {
+        console.log(`statusCode en else: ${res.status}`);
+        //setInterval(enviar, 10000);
+      }
+    })
+    .catch(error => {
+      console.error(error)
+    });
 }
-gps();
+
+//setInterval(gps,60000);
+
+//gps();
+
+
+var comienzo = new Date().getTime();
+var calcularTiempo = setInterval(function () {
+  if (new Date().getTime() - comienzo == 600000) {
+    //clearInterval(calcularTiempo);
+    return 'finalizado';
+  } else {
+    console.log('else')
+    gps();
+  }
+}, 60000);
 
 app.get('/', function (req, res) {
   res.send('Hola');
@@ -94,6 +111,7 @@ app.get('/', function (req, res) {
 //headers en el axios, revisar el statuscode
 //y volver a enviar, sino enviar uno nuevo.. try catch.. repetir cada 1 min por 5 -10 min
 //crear una db, guardar los datos recibidos con los enviados, mostrarlos en react al consultar
+
 
 
 app.listen(PORT, () => {
