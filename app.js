@@ -17,7 +17,6 @@ require('dotenv').config();
 
 //axios
 const axios = require('axios');
-const { time } = require('faker/locale/zh_TW');
 
 
 
@@ -35,7 +34,7 @@ console.log(randomLatitud, randomLongitud);
 var date = moment.utc(date).format('YYYY-MM-DDThh:mm:ssZ');
 console.log(date);
 
-const data = JSON.stringify({
+/*const data = JSON.stringify({
   loginCode: '98173',
   reportDate: date,
   reportType: '2',
@@ -45,7 +44,7 @@ const data = JSON.stringify({
   text: 'DAVID LEIVA',
   textLabel: 'TAG'
 });
-console.log(data);
+console.log(data);*/
 const timestamp = moment().unix();
 const hash = md5Base64(process.env.application + process.env.secretKey + timestamp);
 
@@ -77,7 +76,7 @@ function gps() {
       //console.log(`statusCode: ${res.status}`)
       //console.log(res)
       if (res.status == 200) {
-        console.log(`statusCode en if: ${res.status}`);
+        console.log(`statusCode ok: ${res.status}`);
         //setInterval(gps, 60000);
       } else {
         console.log(`statusCode en else: ${res.status}`);
@@ -94,23 +93,22 @@ function gps() {
 //gps();
 
 
-var comienzo = new Date().getTime();
-var calcularTiempo = setInterval(function () {
-  if (new Date().getTime() - comienzo == 600000) {
-    //clearInterval(calcularTiempo);
-    return 'finalizado';
-  } else {
-    console.log('else')
+var comienzo = new Date().getMinutes();
+console.log(comienzo);
+setInterval(function () {
+  if ((new Date().getMinutes() - comienzo) < 10) {
+    console.log('menor a 10m')
     gps();
+    
+  } else {
+    return 'finalizado';
   }
 }, 60000);
 
 app.get('/', function (req, res) {
   res.send('Hola');
 });
-//headers en el axios, revisar el statuscode
-//y volver a enviar, sino enviar uno nuevo.. try catch.. repetir cada 1 min por 5 -10 min
-//crear una db, guardar los datos recibidos con los enviados, mostrarlos en react al consultar
+
 
 
 
